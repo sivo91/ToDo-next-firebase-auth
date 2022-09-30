@@ -10,22 +10,23 @@ import {
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
 import { addTodo } from "../api/todo";
+
 const AddTodo = () => {
+
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [status, setStatus] = React.useState("pending");
   const [isLoading, setIsLoading] = React.useState(false);
-
   const toast = useToast();
 
-  const { isLoggedIn, user } = useAuth();
-
+  const { isLoggedIn, user } = useAuth() || {}
+  
   const handleTodoCreate = async () => {
     if (!isLoggedIn) {
       toast({
         title: "You must be logged in to create a todo",
         status: "error",
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
       return;
@@ -49,7 +50,7 @@ const AddTodo = () => {
 
   return (
     <Box w="40%" margin={"0 auto"} display="block" mt={5}>
-      <Stack direction="column">
+      <Stack direction="column" mt={20}>
         <Input
           placeholder="Title"
           value={title}
@@ -70,17 +71,17 @@ const AddTodo = () => {
             Pending ⌛
           </option>
           <option
-            value={"completed"}
+            value={"Done"}
             style={{ color: "green", fontWeight: "bold" }}
           >
-            Completed ✅
+            Done ✅
           </option>
         </Select>
 
         <Button
           onClick={() => handleTodoCreate()}
           disabled={title.length < 1 || description.length < 1 || isLoading}
-          variantColor="teal"
+          variantColor="blue"
           variant="solid"
         >
           Add

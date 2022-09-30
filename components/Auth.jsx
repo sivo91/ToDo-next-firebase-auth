@@ -1,5 +1,7 @@
 import React from "react";
+// cakra
 import { Box, Button, Link, Text, useColorMode } from "@chakra-ui/react";
+
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { FaGoogle, FaMoon, FaSun } from "react-icons/fa";
 import { auth } from "../firebase";
@@ -8,9 +10,10 @@ import useAuth from "../hooks/useAuth";
 
 const Auth = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user } = useAuth() || {}
 
   const handleAuth = async () => {
+
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -34,18 +37,20 @@ const Auth = () => {
   };
 
   return (
-    <Box position={"fixed"} top="5%" right="5%">
+    <Box position={"fixed"} top="5%" mt={10} right="5%">
       <Button onClick={() => toggleColorMode()}>
         {colorMode == "dark" ? <FaSun /> : <FaMoon />}
       </Button>{" "}
+
       {isLoggedIn && (
         <>
-          <Text color="green.500">{user.email}</Text>
-          <Link color="red.500" onClick={() => auth.signOut()}>
+          <Text color="#DD6B20" fontSize={30}>{user.email}</Text>
+          <Link color="#975A16" fontSize={25} onClick={() => auth.signOut()}>
             Logout
           </Link>
         </>
       )}
+
       {!isLoggedIn && (
         <Button leftIcon={<FaGoogle />} onClick={() => handleAuth()}>
           Login with Google
